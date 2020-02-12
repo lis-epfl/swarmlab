@@ -142,7 +142,7 @@ p_swarm.Vel0 = p_swarm.V0 + p_swarm.V * rand(3,p_swarm.nb_agents);
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-if exist(SWARM_ALGORITHM)
+if exist('SWARM_ALGORITHM','var')
     str = "param_";
     run(strcat(str, SWARM_ALGORITHM));
 end
