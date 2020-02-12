@@ -18,7 +18,8 @@ This software is designed with _versatility_ and _scalability_ in mind. It allow
 Only [Matlab installation](https://www.mathworks.com/support/install-matlab.html?q=&page=1) is required.
 
 ## 1. Single-drone simulations
-Single-drone simulations exploit the architecture proposed by Professors Beard and McLain in [Small unmanned aircraft: theory and practice](https://press.princeton.edu/books/hardcover/9780691149219/small-unmanned-aircraft) illustrated below. The focus of these simulations is realism. Two drone-types are supported: quadcopter and fixed-wing drones.
+Single-drone simulations exploit the architecture proposed by Professors Beard and McLain in [Small unmanned aircraft: theory and practice](https://press.princeton.edu/books/hardcover/9780691149219/small-unmanned-aircraft) and illustrated below. The focus of these simulations is realism. Their code is available [here](https://github.com/randybeard/mavsim_template_files).
+Two drone-types are supported: quadcopter and fixed-wing drones.
 
 <p align="center">
 <img width=300 src="https://github.com/lis-epfl/uav_simulator/blob/andrea_4/docs/images/drone_architecture.png" alt="drone simulation architecture"/>
@@ -101,7 +102,13 @@ The GUI allows for run-time changes of some parameters, such as the swarm direct
 
 ## Basic usage
 
-<p align="justify">To start off with your first drone swarm simulation, open the project folder <i>SwarmLab</i> in Matlab (see picture aside). Then, add all folders and subfolders to the current path. (Select the transparent elements → right-click → Add to Path → Selected Folders and Subfolders). Then, go to examples → examples_swarm open the <i>example_vicsek.m</i> script.</p>
+
+To start off with your first drone swarm simulation, open the project folder <i>swarmlab</i> in Matlab (see picture aside). Then, add all folders and subfolders to the current path (select the swarmlab folder → right-click → Add to Path → Selected Folders and Subfolders). 
+You have two ways of running your simulations, either via the provided GUIs or by calling an example script.
+ * For the GUI, type `GUI_drone` or `GUI_swarm` on the Matlab command view, select the parameters you want and slide to `On` the _Start Simulation_ button.
+ * For running an example, type `example_vicsek`
+For editing the example scripts, go to examples → examples_swarm, and open the <i>example_vicsek.m</i> script.
+</p>
 
 Finally, simply run the script and pay attention to the prompted instructions!
 
