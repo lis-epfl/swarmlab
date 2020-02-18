@@ -13,7 +13,7 @@ avg_dist = zeros(t_steps,1);
 for k = 1:t_steps
     Pos_k = pos_history(k,:);
     Pos_k = reshape(Pos_k,3,[]);
-    Dist_k_matrix = pos2dist(Pos_k');
+    Dist_k_matrix = pos2dist(Pos_k);
     M = compute_neighborhood(Dist_k_matrix, r_comm, max_neig);
     dist_neig = Dist_k_matrix(M==true);
     if ~isempty(dist_neig)
