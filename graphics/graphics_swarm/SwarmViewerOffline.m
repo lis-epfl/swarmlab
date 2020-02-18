@@ -156,7 +156,7 @@ classdef SwarmViewerOffline < handle
                 drawnow;
                 self.wakes = circshift(self.wakes, 1);
                 self.wakes(1,:) = pos_current;
-                title(sprintf('Simulation time: %.2f seconds', time));
+                title(sprintf('Simulation time: %.1f seconds', time));
             end
         end
         
