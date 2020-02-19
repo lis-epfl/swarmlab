@@ -1,5 +1,5 @@
 # SwarmLab
-<p align="center"><img src="https://github.com/lis-epfl/uav_simulator/blob/andrea_4/docs/images/SwarmLab.svg" alt="Logo" height="200"></p>
+<p align="center"><img src="https://https://github.com/lis-epfl/swarmlab/blob/master/docs/images/SwarmLab.svg" alt="Logo" height="200"></p>
  
 <br>
 <br>
@@ -11,7 +11,7 @@ SwarmLab is a drone swarm simulator written in Matlab. It aims at:
 This software is designed with _versatility_ and _scalability_ in mind. It allows for fast programming and easy incorporation of various modules designed for drone and drone swarm simulations. It  also decreases the coding effort by offering built-in and ready-to-use functionalities. These features make this package suitable to different applications in the area of drones and swarm robotics, including fast algorithm  development, training, education, and the automatic collection of simulated data.
 
 <p align="center">
-<img height=300 src="https://github.com/lis-epfl/uav_simulator/blob/andrea_4/docs/images/Scheme.jpg" alt="scheme of architecture"/>
+<img height=300 src="https://https://github.com/lis-epfl/swarmlab/blob/master/docs/images/Scheme.jpg" alt="scheme of architecture"/>
 </p>
 
 ## Requirements
@@ -22,7 +22,7 @@ Single-drone simulations exploit the architecture proposed by Professors Beard a
 Two drone-types are supported: quadcopter and fixed-wing drones.
 
 <p align="center">
-<img width=300 src="https://github.com/lis-epfl/uav_simulator/blob/andrea_4/docs/images/drone_architecture.png" alt="drone simulation architecture"/>
+<img width=300 src="https://https://github.com/lis-epfl/swarmlab/blob/master/docs/images/drone_architecture.png" alt="drone simulation architecture"/>
 </p>
 
 ### Graphics
@@ -31,8 +31,8 @@ The graphical tools supported for single drone simulations are:
 * state variable plotter
 
 <p align="center">
-<img height=300 src="https://github.com/lis-epfl/uav_simulator/blob/andrea_4/docs/images/drone_viewer.png" alt="drone viewer"/>
-<img height=300 src="https://github.com/lis-epfl/uav_simulator/blob/andrea_4/docs/images/drone_state_plotter.png" alt="drone state plotter"/>
+<img height=300 src="https://https://github.com/lis-epfl/swarmlab/blob/master/docs/images/drone_viewer.png" alt="drone viewer"/>
+<img height=300 src="https://https://github.com/lis-epfl/swarmlab/blob/master/docs/images/drone_state_plotter.png" alt="drone state plotter"/>
 </p>
 
 ### Examples
@@ -43,8 +43,8 @@ The following examples are provided:
 4. path planner
 
 <p align="center">
-<img height=300 src="https://github.com/lis-epfl/uav_simulator/blob/andrea_4/docs/images/path_manager.png" alt="path manager example"/>
-<img height=300 src="https://github.com/lis-epfl/uav_simulator/blob/andrea_4/docs/images/path_planner.png" alt="path planner example"/>
+<img height=300 src="https://https://github.com/lis-epfl/swarmlab/blob/master/docs/images/path_manager.png" alt="path manager example"/>
+<img height=300 src="https://https://github.com/lis-epfl/swarmlab/blob/master/docs/images/path_planner.png" alt="path planner example"/>
 </p>
 
 ### GUI
@@ -52,7 +52,7 @@ The following examples are provided:
 For ease of use, single-drone simulations can also be run from a dedicated GUI, that allows to change a selection of parameters, e.g. drone type, simulation type, debugging plots, simulation time.
 
 <p align="center">
-<img width=400 src="https://github.com/lis-epfl/uav_simulator/blob/andrea_4/docs/images/GUI_drone.png" alt="GUI drone"/>
+<img width=400 src="https://https://github.com/lis-epfl/swarmlab/blob/master/docs/images/GUI_drone.png" alt="GUI drone"/>
 </p>
 
 ## 2. Drone-swarm simulations
@@ -67,10 +67,10 @@ The graphical tools supported for drone swarm simulations are:
 * offline performance analyser
 
 <p align="center">
-<img height=300 src="https://github.com/lis-epfl/uav_simulator/blob/andrea_4/docs/images/swarm_traj.png" alt="swarm trajectories"/>
-<img height=300 src="https://github.com/lis-epfl/uav_simulator/blob/andrea_4/docs/images/swarm_dist.png" alt="swarm distances"/>
-<img height=300 src="https://github.com/lis-epfl/uav_simulator/blob/andrea_4/docs/images/swarm_speed.png" alt="swarm speed"/>
-<img height=300 src="https://github.com/lis-epfl/uav_simulator/blob/andrea_4/docs/images/swarm_performance.png" alt="swarm performances"/>
+<img height=300 src="https://https://github.com/lis-epfl/swarmlab/blob/master/docs/images/swarm_traj.png" alt="swarm trajectories"/>
+<img height=300 src="https://https://github.com/lis-epfl/swarmlab/blob/master/docs/images/swarm_dist.png" alt="swarm distances"/>
+<img height=300 src="https://https://github.com/lis-epfl/swarmlab/blob/master/docs/images/swarm_speed.png" alt="swarm speed"/>
+<img height=300 src="https://https://github.com/lis-epfl/swarmlab/blob/master/docs/images/swarm_performance.png" alt="swarm performances"/>
 </p>
 
 ### Examples
@@ -84,11 +84,11 @@ The following illustrations represent:
 before and after convergence to the equilibrium configuration.
 
 <p align="center">
-<img height=300 src="https://github.com/lis-epfl/uav_simulator/blob/andrea_4/docs/images/point_mass_swarm.png" alt="point mass swarm"/>
+<img height=300 src="https://https://github.com/lis-epfl/swarmlab/blob/master/docs/images/point_mass_swarm.png" alt="point mass swarm"/>
 </p>
 
 <p align="center">
-<img height=300 src="https://github.com/lis-epfl/uav_simulator/blob/andrea_4/docs/images/quad_swarm.png" alt="quadcopter swarm"/>
+<img height=300 src="https://https://github.com/lis-epfl/swarmlab/blob/master/docs/images/quad_swarm.png" alt="quadcopter swarm"/>
 </p>
 
 ### GUI
@@ -97,7 +97,7 @@ The GUI allows for run-time changes of some parameters, such as the swarm direct
 
 
 <p align="center">
-<img width=400 src="https://github.com/lis-epfl/uav_simulator/blob/andrea_4/docs/images/GUI_swarm.png" alt="GUI swarm"/>
+<img width=400 src="https://https://github.com/lis-epfl/swarmlab/blob/master/docs/images/GUI_swarm.png" alt="GUI swarm"/>
 </p>
 
 ## Basic usage
@@ -113,7 +113,7 @@ For editing the example scripts, go to examples → examples_swarm, and open the
 Finally, simply run the script and pay attention to the prompted instructions!
 
 <p align="center">
-<img align="center" width="300" height="450" src="https://github.com/lis-epfl/uav_simulator/blob/andrea_4/docs/images/project_folder.png">
+<img align="center" width="300" height="450" src="https://https://github.com/lis-epfl/swarmlab/blob/master/docs/images/project_folder.png">
 </p>
 
 ## Acknowledgements
