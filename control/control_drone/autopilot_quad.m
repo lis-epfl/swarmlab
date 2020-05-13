@@ -1,4 +1,4 @@
-   function y = autopilot_quad(drone, t)
+function y = autopilot_quad(drone, t)
     % AUTOPILOT_QUAD - autopilot used for the quadcopter
 
     p_drone = drone.p_drone;
@@ -45,11 +45,18 @@
         ae_c = drone.command(3); % commanded east accell     [m/s^2]
         ad_c = drone.command(4); % commanded down accell     [m/s^2]
 
-    else %if autopilot_version == 4% position autopilot
+    elseif autopilot_version == 4% position autopilot
         psi_c = drone.command(1); % commanded yaw            [rad]
         pn_c = drone.command(2); % commanded north position  [m]
         pe_c = drone.command(3); % commanded east position   [m]
         pd_c = drone.command(4); % commanded down position   [m]
+    
+    elseif autopilot_version == 5% cascaded velocity autopilot
+        psi_c = drone.command(1); % commanded yaw            [rad]
+        vn_c = drone.command(2); % commanded north velocity  [m/s]
+        ve_c = drone.command(3); % commanded east velocity   [m/s]
+        vd_c = drone.command(4); % commanded down velocity   [m/s]
+    
     end
 
     %Forces
@@ -77,6 +84,10 @@
             [delta, x_command] = autopilot_position(psi_c, pn_c, pe_c, pd_c, ...
                 vx, vy, vz, phi, theta, psi, ...
                 p, q, r, h, pn, pe, t, p_drone, p_sim, drone);
+        case 5    
+            [delta, x_command] = autopilot_velocity_cascaded(psi_c, vn_c, ve_c, vd_c, ...
+                vx, vy, vz, phi, theta, psi, ...
+                p, q, r, h, t, p_drone, p_sim, drone);
     end
 
     y = [delta; x_command];
@@ -146,6 +157,103 @@ function [delta, x_command] = autopilot_attitude(h_c, phi_c, theta_c, ...
             0; ...% vn
             0; ...% ve
             0; ...% vd
+            0; % an
+            0; % ae
+            0; % ad
+            0; ...% Va
+            0; ...% alpha
+            0; ...% beta
+            phi_c; ...% phi
+            theta_c; % theta
+            psi_c; ...% psi
+            0; % chi
+            0; ...% p
+            0; ...% q
+            0; ...% r
+            ];
+
+    y = [delta; x_command];
+    drone.altitude_state_prev = drone.altitude_state;
+
+end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function [delta, x_command] = autopilot_velocity_cascaded(psi_c, vn_c, ve_c, ...
+        vd_c, vx, vy, vz, phi, theta, psi, p, q, r, h, t, p_drone, p_sim, drone)
+% AUTOPILOT_VELOCITY
+
+    Rbi = Rb2i(phi, theta, psi);
+    v_ned = Rbi * [vx vy vz]';
+    vn = v_ned(1);
+    ve = v_ned(2);
+    vd = v_ned(3);
+
+    if h <= p_drone.altitude_take_off_zone
+        drone.altitude_state = 2;
+    else
+        drone.altitude_state = 2;
+    end
+
+    if t == 0 || (drone.altitude_state ~= drone.altitude_state_prev)
+        drone.initialize_integrator = 1;
+    else
+        drone.initialize_integrator = 0;
+    end
+
+    % Implement state machine
+    switch drone.altitude_state
+        case 1% in take-off zone
+            d1 = 1;
+            d2 = 1;
+            d3 = 1;
+            d4 = 1;
+        case 2% outside take-off zone
+            [thrust, drone.P_vd_thrust] = vd_thrust_hold(vd_c, vd, ...
+                drone.initialize_integrator, p_drone, p_sim, drone.P_vd_thrust);
+            [phi_c, drone.P_ve_roll] = ve_roll_hold(ve_c, ve, ...
+                drone.initialize_integrator, p_drone, p_sim, drone.P_ve_roll);
+            [p_c, drone.P_roll_p] = roll_p_hold(phi_c, ...
+                phi, p / 180 * pi, drone.initialize_integrator, p_drone, p_sim, ...
+                drone.P_roll_p);
+            [torque_phi, drone.P_p_torque] = p_torque_hold(p_c, ...
+                p, drone.initialize_integrator, p_drone, p_sim, ...
+                drone.P_p_torque);
+            [theta_c, drone.P_vn_pitch] = vn_pitch_hold(vn_c, vn, ...
+                drone.initialize_integrator, p_drone, p_sim, drone.P_vn_pitch);
+            [q_c, drone.P_pitch_q] = pitch_q_hold(...
+                theta_c, theta, q / 180 * pi, ...
+                drone.initialize_integrator, p_drone, p_sim, drone.P_pitch_q);
+            [torque_theta, drone.P_q_torque] = q_torque_hold(q_c, ...
+                q, drone.initialize_integrator, p_drone, p_sim, ...
+                drone.P_q_torque);
+            [r_c, drone.P_yaw_r] = yaw_r_hold(psi_c, ...
+                psi, r / 180 * pi, drone.initialize_integrator, p_drone, p_sim,...
+                drone.P_yaw_r);
+            [torque_psi, drone.P_r_torque] = r_torque_hold(r_c, ...
+                r, drone.initialize_integrator, p_drone, p_sim,...
+                drone.P_r_torque);
+
+            [d1, d2, d3, d4] = mixer(thrust, torque_phi, torque_theta, ...
+                torque_psi, p_drone, p_sim);
+
+            % artificially saturation delta_t
+            d1 = saturate(d1, p_drone.dt_max, 0);
+            d2 = saturate(d2, p_drone.dt_max, 0);
+            d3 = saturate(d3, p_drone.dt_max, 0);
+            d4 = saturate(d4, p_drone.dt_max, 0);
+    end
+
+    % Control outputs
+    delta = [d1; d2; d3; d4];
+
+    % Commanded (desired) states
+    x_command = [...
+                0; ...% pn
+            0; ...% pe
+            0; ...% h
+            vn_c; ...% vn
+            ve_c; ...% ve
+            vd_c; ...% vd
             0; % an
             0; % ae
             0; % ad
@@ -572,6 +680,96 @@ function [thrust, P_vd_thrust] = vd_thrust_hold(vd_c, vd, reinit, p_drone, p_sim
 
     [thrust, P_vd_thrust] = pid_loop(vd_c, vd, Inf, p_drone.kp_vd, p_drone.ki_vd, 0, ...
         p_drone.thrust_max, p_sim.dt, 0.1, P_vd_thrust);
+end
+
+function [p_c, P_roll_p] = roll_p_hold(phi_c, ...
+    phi, p, reinit, p_drone, p_sim, P_roll_p)
+
+    if reinit || isempty(P_roll_p)
+        P_roll_p.int = 0;
+        P_roll_p.diff = 0;
+        P_roll_p.error_prev = 0;
+        P_roll_p.y_c_prev = 0;
+    end
+
+    [p_c, P_roll_p] = pid_loop(phi_c, phi, p, p_drone.kp_phi_cas, ...
+        p_drone.ki_phi_cas, p_drone.kd_phi_cas, ...
+        p_drone.p_max, p_sim.dt, 0.1, P_roll_p);
+end
+
+function [q_c, P_pitch_q] = pitch_q_hold(theta_c, ...
+    theta, q, reinit, p_drone, p_sim, P_pitch_q)
+
+    if reinit || isempty(P_pitch_q)
+        P_pitch_q.int = 0;
+        P_pitch_q.diff = 0;
+        P_pitch_q.error_prev = 0;
+        P_pitch_q.y_c_prev = 0;
+    end
+
+    [q_c, P_pitch_q] = pid_loop(theta_c, theta, q, p_drone.kp_theta_cas, ...
+        p_drone.ki_theta_cas, p_drone.kd_theta_cas, ...
+        p_drone.q_max, p_sim.dt, 0.1, P_pitch_q);
+end
+
+function [r_c, P_yaw_r] = yaw_r_hold(psi_c, ...
+    psi, r, reinit, p_drone, p_sim, P_yaw_r)
+
+    if reinit || isempty(P_yaw_r)
+        P_yaw_r.int = 0;
+        P_yaw_r.diff = 0;
+        P_yaw_r.error_prev = 0;
+        P_yaw_r.y_c_prev = 0;
+    end
+
+    [r_c, P_yaw_r] = pid_loop(psi_c, psi, r, p_drone.kp_psi_cas, ...
+        p_drone.ki_psi_cas, p_drone.kd_psi_cas, ...
+        p_drone.r_max, p_sim.dt, 0.1, P_yaw_r);
+end
+
+function [torque_phi, P_p_torque] = p_torque_hold(p_c, ...
+    p, reinit, p_drone, p_sim, P_p_torque)
+    
+    if reinit || isempty(P_p_torque)
+        P_p_torque.int = 0;
+        P_p_torque.diff = 0;
+        P_p_torque.error_prev = 0;
+        P_p_torque.y_c_prev = 0;
+    end
+
+    [torque_phi, P_p_torque] = pid_loop(p_c, p, Inf, p_drone.kp_p, p_drone.ki_p, p_drone.kd_p, ...
+        p_drone.torque_max, p_sim.dt, 0.1, P_p_torque);
+
+end
+
+function [torque_theta, P_q_torque] = q_torque_hold(q_c, ...
+    q, reinit, p_drone, p_sim, P_q_torque)
+    
+    if reinit || isempty(P_q_torque)
+        P_q_torque.int = 0;
+        P_q_torque.diff = 0;
+        P_q_torque.error_prev = 0;
+        P_q_torque.y_c_prev = 0;
+    end
+
+    [torque_theta, P_q_torque] = pid_loop(q_c, q, Inf, p_drone.kp_q, p_drone.ki_q, p_drone.kd_q, ...
+        p_drone.torque_max, p_sim.dt, 0.1, P_q_torque);
+
+end
+
+function [torque_psi, P_r_torque] = r_torque_hold(r_c, ...
+    r, reinit, p_drone, p_sim, P_r_torque)
+    
+    if reinit || isempty(P_r_torque)
+        P_r_torque.int = 0;
+        P_r_torque.diff = 0;
+        P_r_torque.error_prev = 0;
+        P_r_torque.y_c_prev = 0;
+    end
+
+    [torque_psi, P_r_torque] = pid_loop(r_c, r, Inf, p_drone.kp_r, p_drone.ki_r, p_drone.kd_r, ...
+        p_drone.torque_max, p_sim.dt, 0.1, P_r_torque);
+
 end
 
 function [thrust, P_ad_thrust] = ad_thrust_hold(ad_c, ad, reinit, p_drone, p_sim, ...

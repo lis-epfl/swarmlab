@@ -159,8 +159,14 @@ classdef Drone < handle
         initialize_integrator
         P_h_thrust
         P_roll_torque
+        P_roll_p
+        P_p_torque
         P_pitch_torque
+        P_pitch_q
+        P_q_torque
         P_psi_torque
+        P_yaw_r
+        P_r_torque
         P_ad_thrust
         P_vn_pitch
         P_ve_roll
@@ -211,7 +217,7 @@ classdef Drone < handle
             
             switch drone_type
                 case "quadcopter"
-                    Drone.autopilot_version = 2;
+                    Drone.autopilot_version = 5;
                 case "fixed_wing"
                     Drone.autopilot_version = -1;
                 case "point_mass"

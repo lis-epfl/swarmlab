@@ -124,7 +124,7 @@ p_drone.kp_pd         = 0;
 p_drone.ki_pd         = p_drone.mass;
 p_drone.kd_pd         = 0;
 
-% pp roll hold controller
+% pe roll hold controller
 p_drone.kp_pe         = 0;
 p_drone.ki_pe         = p_drone.mass;
 p_drone.kd_pe         = 0;
@@ -134,14 +134,54 @@ p_drone.kp_pn         = 0;
 p_drone.ki_pn         = p_drone.mass;
 p_drone.kd_pn         = 0;
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% roll p hold controller
+p_drone.kp_phi_cas    = omega_n_phi;
+p_drone.ki_phi_cas    = 0;
+p_drone.kd_phi_cas    = 0;
+
+% pitch q hold controller
+p_drone.kp_theta_cas   = omega_n_theta;
+p_drone.ki_theta_cas   = 0;
+p_drone.kd_theta_cas   = 0;
+
+% yaw r hold controller
+p_drone.kp_psi_cas     = omega_n_psi;
+p_drone.ki_psi_cas     = 0;
+p_drone.kd_psi_cas     = 0;
+
+% p torque hold controller
+omega_n_p            = 1;
+Lx                   = p_drone.l_arm * p_drone.C_prop * p_drone.k_omega^2 / p_drone.Jx;
+p_drone.kp_p         = omega_n_p/Lx;
+p_drone.ki_p         = 0;
+p_drone.kd_p         = 0;
+
+% q torque hold controller
+omega_n_q            = 1;
+Ly                   = p_drone.l_arm * p_drone.C_prop * p_drone.k_omega^2 / p_drone.Jy;
+p_drone.kp_q         = omega_n_q/Ly;
+p_drone.ki_q         = 0;
+p_drone.kd_q         = 0;
+
+% r torque hold controller
+omega_n_r            = 1;
+Lz                   = p_drone.l_arm * p_drone.C_prop * p_drone.k_omega^2 / p_drone.Jz;
+p_drone.kp_r         = omega_n_r/Lz;
+p_drone.ki_r         = 0;
+p_drone.kd_r         = 0;
+
+%%%%%%s%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Define the maximum range of actuators
-p_drone.theta_max     = deg2rad(40);
-p_drone.phi_max       = deg2rad(40);
-p_drone.thrust_max    = p_drone.k_omega;        % [rad/s]
-p_drone.torque_max    = 100;              % [N/m]
+p_drone.theta_max     = deg2rad(30);
+p_drone.phi_max       = deg2rad(30);
+p_drone.thrust_max    = 4 * p_drone.C_prop * p_drone.k_omega^2;  % [N]
+p_drone.torque_max    = 100;              % [N/m] %TODO
 p_drone.vd_max        = 10;               % [m/s] 
 p_drone.v_max         = 5;                % [m/s]
+p_drone.p_max         = 25;               % [rad/s]
+p_drone.q_max         = 25;               % [rad/s]
+p_drone.r_max         = 5;               % [rad/s]
+
 
 % first cut at initial conditions
 p_drone.pn_T    = 0;  % initial North position

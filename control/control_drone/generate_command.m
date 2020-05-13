@@ -7,7 +7,7 @@ if drone_type == "fixed_wing"
         % command set
         command = [0 100 0.26 0]';
 elseif drone_type == "quadcopter" || drone_type == "point_mass"
-        flag = mod(floor(time/3),2);
+        flag = mod(floor(time/5),2);
 
         switch autopilot_version
             case 1 % attitude control
@@ -18,12 +18,18 @@ elseif drone_type == "quadcopter" || drone_type == "point_mass"
                 end
             case 2 % velocity controller
                 if flag == 0
-                    command = [0 0 6 0]';
+                    command = [0 0 3 0]';
                 else
-                    command = [0 0 -6 0]';
+                    command = [0 0 -3 0]';
                 end
             case 3 % acceleration controller
                 command = [0.5 0 0 0]';
+            case 5 % velocity controller
+            if flag == 0
+                command = [0 0 3 0]';
+            else
+                command = [0 0 -3 0]';
+            end
         end
         
 end
