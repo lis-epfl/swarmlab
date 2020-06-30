@@ -24,11 +24,17 @@ elseif drone_type == "quadcopter" || drone_type == "point_mass"
                 end
             case 3 % acceleration controller
                 command = [0.5 0 0 0]';
-            case 5 % velocity controller
+            case 5 % cascaded velocity controller
             if flag == 0
                 command = [0 0 3 0]';
             else
                 command = [0 0 -3 0]';
+            end
+            case 6 % cascaded position controller
+            if flag == 0
+                command = [0 0 2 0]';
+            else
+                command = [0 0 -2 0]';
             end
         end
         

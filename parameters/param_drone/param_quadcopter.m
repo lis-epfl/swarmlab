@@ -2,7 +2,7 @@ p_drone.mass = 0.025;      % [kg]
 p_drone.Jx   = 1.657171e-5;   % [kg * m2]
 p_drone.Jy   = 1.6655602e-5;   % [kg * m2]
 p_drone.Jz   = 2.9261652e-5;   % [kg * m2]
-p_drone.Jxz  = 0.718277e-6;    % [kg * m2]
+p_drone.Jxz  = 0; % 0.718277e-6;    % [kg * m2]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Compute gammas
@@ -20,16 +20,16 @@ p_drone.gamma8 = p_drone.Jx/p_drone.gamma;
 
 % Aerodynamic coefficients
 p_drone.l_arm      = 0.03252691193;            % [m] length of one arm
-p_drone.J_prop     = 0;   % [kg * m^2] inertia of each propeller %TODO
+p_drone.J_prop     = 1/12*0.0002*(0.1^2+0.01^2);   % [kg * m^2] inertia of each propeller %TODO
 
 p_drone.k_omega       = 3052;         % [rad/s] max angular velocity for each motor
 p_drone.C_prop        = 1.2819184e-8; % proportional coeff of propeller force
 
-p_drone.Ax            = 4*9.1785e-7;         % [kg/s]
-p_drone.Ay            = 4*9.1785e-7; 
-p_drone.Az            = 4*9.1785e-7; 
+p_drone.Ax            = 0; % 4*9.1785e-7;         % [kg/s]
+p_drone.Ay            = 0; % 4*9.1785e-7; 
+p_drone.Az            = 0; % 4*9.1785e-7; 
 
-p_drone.drag_area     = 0.08;         % [m^2]
+p_drone.drag_area     = 0.0008;         % [m^2]
 
 p_drone.CD            = p_drone.C_prop*0.005964552; % drag constant
 
@@ -136,6 +136,24 @@ p_drone.kp_pn         = 0;
 p_drone.ki_pn         = p_drone.mass;
 p_drone.kd_pn         = 0;
 
+% pn vn hold controller
+omega_n_pn           = 1.3;
+p_drone.kp_pn_cas    = omega_n_pn;
+p_drone.ki_pn_cas    = 0;
+p_drone.kd_pn_cas    = 0;
+
+% pe ve hold controller
+omega_n_pe          = 1.3;
+p_drone.kp_pe_cas   = omega_n_pe;
+p_drone.ki_pe_cas   = 0;
+p_drone.kd_pe_cas   = 0;
+
+% pd ve hold controller
+omega_n_pd            = 1.3;
+p_drone.kp_pd_cas     = omega_n_pd;
+p_drone.ki_pd_cas     = 0;
+p_drone.kd_pd_cas     = 0;
+
 % roll p hold controller
 p_drone.kp_phi_cas    = omega_n_phi;
 p_drone.ki_phi_cas    = 0;
@@ -182,7 +200,7 @@ p_drone.vd_max        = 10;               % [m/s]
 p_drone.v_max         = 5;                % [m/s]
 p_drone.p_max         = 25;               % [rad/s]
 p_drone.q_max         = 25;               % [rad/s]
-p_drone.r_max         = 5;               % [rad/s]
+p_drone.r_max         = 5;                % [rad/s]
 
 
 % first cut at initial conditions

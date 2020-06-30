@@ -108,13 +108,13 @@ weight = p_drone.mass * p_physics.gravity * [-sin(theta);...
 f_thrust = [0, 0, - p_drone.C_prop*p_drone.k_omega^2* (d1^2+d2^2+d3^2+d4^2)]';
 
 %     % linear drag 
-%     A = [p_drone.Ax    0       0;
-%         0        p_drone.Ay    0;
-%         0        0       p_drone.Az];
-%     f_drag = - A*v_xyz;
+    A = [p_drone.Ax    0       0;
+        0        p_drone.Ay    0;
+        0        0       p_drone.Az];
+    f_drag = - A*v_xyz;
 
 % non linear drag
-f_drag = -0.5 * p_physics.rho * Va * p_drone.drag_area .* va_xyz;
+% f_drag = -0.5 * p_physics.rho * Va * p_drone.drag_area .* va_xyz;
 
 % Total force
 f_tot = weight + f_thrust + f_drag;

@@ -46,7 +46,7 @@ end
 
 % Init drone
 drone = Drone(DRONE_TYPE, p_drone, p_battery, p_sim, p_physics, map);
-drone.set_pos([rand() * map.width; rand() * map.width; -rand() * map.max_height]);
+drone.set_pos([0; 0; 0]);
 
 % Init video writer
 if VIDEO

@@ -176,6 +176,9 @@ classdef Drone < handle
         P_pd_thrust
         P_pe_roll
         P_pn_pitch
+        P_pn_vn
+        P_pe_ve
+        P_pd_vd
 
         % Variables for autopilot-wing
         lat_state
@@ -217,7 +220,7 @@ classdef Drone < handle
             
             switch drone_type
                 case "quadcopter"
-                    Drone.autopilot_version = 5;
+                    Drone.autopilot_version = 1;
                 case "fixed_wing"
                     Drone.autopilot_version = -1;
                 case "point_mass"
