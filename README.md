@@ -14,6 +14,19 @@ This software is designed with _versatility_ and _scalability_ in mind. It allow
 <img height=300 src="https://github.com/lis-epfl/swarmlab/blob/master/docs/images/Scheme.jpg" alt="scheme of architecture"/>
 </p>
 
+For further details refer to our [preprint](https://arxiv.org/abs/2005.02769) and please use the following BibTex entry to cite our work:
+
+```
+@article{soria2020swarmlab,
+  title={SwarmLab: a Matlab Drone Swarm Simulator},
+  author={Soria, Enrica and Schiano, Fabrizio and Floreano, Dario},
+  journal={arXiv preprint arXiv:2005.02769},
+  year={2020}
+}
+```
+
+The paper has been accepted to the [IEEE/RSJ IROS 2020](https://www.iros2020.org/) conference. The BibTex entry above will be updated upon publication of the paper in the [IEEE/RSJ IROS 2020](https://www.iros2020.org/) proceedings.
+
 ## Requirements
 Only [Matlab installation](https://www.mathworks.com/support/install-matlab.html?q=&page=1) is required.
 
@@ -125,3 +138,17 @@ This software is provided under MIT License (MIT).
 Copyright (c) 2020 Enrica Soria.
 
 #### _Enjoy!_ :+1:
+
+## How to cite
+For further details refer to our [preprint](https://arxiv.org/abs/2005.02769) and please use the following BibTex entry to cite our work:
+
+```
+@article{soria2020swarmlab,
+  title={SwarmLab: a Matlab Drone Swarm Simulator},
+  author={Soria, Enrica and Schiano, Fabrizio and Floreano, Dario},
+  journal={arXiv preprint arXiv:2005.02769},
+  year={2020}
+}
+```
+
+The paper has been accepted to the [IEEE/RSJ IROS 2020](https://www.iros2020.org/) conference. The BibTex entry above will be updated upon publication of the paper in the [IEEE/RSJ IROS 2020](https://www.iros2020.org/) proceedings.
