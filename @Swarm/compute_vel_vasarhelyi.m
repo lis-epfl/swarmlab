@@ -1,4 +1,4 @@
-function [V_command, collisions] = compute_vel_vicsek(self, p_swarm, r_agent, dt)
+function [V_command, collisions] = compute_vel_vasarhelyi(self, p_swarm, r_agent, dt)
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % VICSEK SWARMING ALGORITHM

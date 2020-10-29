@@ -8,7 +8,7 @@ set(groot,'DefaultLineLineWidth',1.5)
 %% Initialization
 
 end_time = 500; % p_sim to evaluate 
-algo_array = ["vicsek", "olfati_saber"];
+algo_array = ["vasarhelyi", "olfati_saber"];
 neig_array = [2, 4, 8, 16, 32, 64];
 nb_agents = 64; 
 co_mn = zeros(3, length(algo_array), length(neig_array));
@@ -43,7 +43,7 @@ title('Collision analysis: agent-obstacle')
 xlabel('Number of max neighbours')
 ylabel('Collisions')
 grid on
-legend('vicsek', 'olfati-saber', 'Location', 'northwest')    
+legend('vasarhelyi', 'olfati-saber', 'Location', 'northwest')    
 
 figure
 
@@ -60,7 +60,7 @@ title('Collision analysis: agent-agent')
 xlabel('Number of max neighbours')
 ylabel('Collisions')
 grid on
-legend('vicsek', 'olfati-saber', 'Location', 'northwest')   
+legend('vasarhelyi', 'olfati-saber', 'Location', 'northwest')   
 %%
 
 disp('Computational time analysis completed successfully')

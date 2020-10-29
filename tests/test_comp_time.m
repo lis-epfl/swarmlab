@@ -12,7 +12,7 @@ set(groot,'DefaultLineLineWidth',1.5)
 
 end_time = 10; % p_sim to evaluate 
 iterations = 1;
-algo_array = ["vicsek", "olfati_saber"];
+algo_array = ["vasarhelyi", "olfati_saber"];
 drone_array = ["point_mass", "quadcopter"];
 nb_agents_array = [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024]; % nb_agents to evaluate  
 ct = zeros(length(iterations), length(algo_array), length(drone_array), length(nb_agents_array));

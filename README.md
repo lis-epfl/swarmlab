@@ -106,8 +106,8 @@ The GUI allows for run-time changes of some parameters, such as the swarm direct
 To start off with your first drone swarm simulation, open the project folder <i>swarmlab</i> in Matlab (see picture aside). Then, add all folders and subfolders to the current path (select the swarmlab folder → right-click → Add to Path → Selected Folders and Subfolders). 
 You have two ways of running your simulations, either via the provided GUIs or by calling an example script.
  * For the GUI, type `GUI_drone` or `GUI_swarm` on the Matlab command view, select the parameters you want and slide to `On` the _Start Simulation_ button.
- * For running an example, type `example_vicsek`
-For editing the example scripts, go to examples → examples_swarm, and open the <i>example_vicsek.m</i> script.
+ * For running an example, type `example_vasarhelyi`
+For editing the example scripts, go to examples → examples_swarm, and open the <i>example_vasarhelyi.m</i> script.
 </p>
 
 Finally, simply run the script and pay attention to the prompted instructions!

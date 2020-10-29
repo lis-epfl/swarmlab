@@ -2,7 +2,7 @@ function computational_time = example_ct(SWARM_ALGORITHM, DRONE_TYPE, nb_agents,
 
     t_start = tic;
 
-    %% Running example_vicsek.m
+    %% Running example_vasarhelyi.m
 
     ACTIVE_ENVIRONMENT = false;
     DEBUG = false;
