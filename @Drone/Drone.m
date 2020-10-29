@@ -587,11 +587,13 @@ classdef Drone < handle
             % UPDATE_SENSOR_MEASUREMENTS: Update the sensor measurements
             % based on the sensor parameters.
             
-            y_imu_baro = sensors(self.get_state(), self.forces, self.airdata, ...
-                self.p_drone, self.p_physics);
-            y_gps = gps(self.get_state(), self.p_sim.dt, self.p_drone);
-            
-            self.y = [y_imu_baro; y_gps];
+            if self.use_estimation
+                y_imu_baro = sensors(self.get_state(), self.forces, self.airdata, ...
+                    self.p_drone, self.p_physics);
+                y_gps = gps(self.get_state(), self.p_sim.dt, self.p_drone);
+
+                self.y = [y_imu_baro; y_gps];
+            end
 
         end
         
