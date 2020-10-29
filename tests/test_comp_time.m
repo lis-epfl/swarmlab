@@ -14,7 +14,7 @@ end_time = 10; % p_sim to evaluate
 iterations = 1;
 algo_array = ["vicsek", "olfati_saber"];
 drone_array = ["point_mass", "quadcopter"];
-nb_agents_array = [2, 4, 8, 16, 32, 64]; % nb_agents to evaluate  
+nb_agents_array = [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024]; % nb_agents to evaluate  
 ct = zeros(length(iterations), length(algo_array), length(drone_array), length(nb_agents_array));
 
 %% Loop
@@ -41,7 +41,8 @@ figure;
 selected_iter = 1;
 for selected_algo = 1:length(algo_array)
     for  selected_drone = 1:length(drone_array)
-            scatter(nb_agents_array, ct(selected_iter,selected_algo, selected_drone, :)/end_time, 900, '.');
+            h = plot(nb_agents_array, ct(selected_iter,selected_algo, selected_drone, :)/end_time,'-o');
+            set(h, 'markerfacecolor', get(h, 'color'));
             hold on
     end
 end
@@ -52,7 +53,7 @@ xlabel('Number of drones')
 ylabel('Real-time factor')
 xticks(nb_agents_array);
 yticks([0 0.1 1 10]);
-legend('vicsek, point-mass', 'vicsek, quadcopter', ...
+legend('vasarhelyi, point-mass', 'vasarhelyi, quadcopter', ...
         'olfati-saber, point-mass', 'olfati-saber, quadcopter', ...
         'Location','northwest')
    

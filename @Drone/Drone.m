@@ -52,12 +52,14 @@ classdef Drone < handle
     %           the 4 motors
     % forces:
     %           vect3, 3D vector of the forces acting on the drone [N]
+    %           computed in the body frame
     % moments:
     %           vect3, 3D vector of the moments acting on the drone [N*m]
+    %           computed in the body frame
     % wind:
     %           vect6, wind and gusts in xyz coordinates
     %
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Handles and other variables for the autopilot:
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % body_handle:
@@ -118,27 +120,30 @@ classdef Drone < handle
         
         map % FIXME: why does the drone need a map? That's not logical
 
-        % state = [pos_ned; vel_xyz; attitude; rates]
-        pos_ned
-        vel_xyz
-        attitude
-        rates
+        % State = [pos_ned; vel_xyz; attitude; rates]
+        pos_ned     % pn, pe, pd
+        vel_xyz     % vx, vy, vz
+        attitude    % phi, theta, psi
+        rates       % p, q, r
         
-        % state history
+        % State history
         pos_ned_history
         vel_xyz_history
 
+        % Auxiliary variables
         prev_state
         path_len
-        
-        z_hat
-        airdata
+        y       % sensor measurements
+        z_hat   % esitmated extended state
+        airdata % air data
 
+        % Command variables
         command
         prev_command
         full_command
         delta
 
+        % Forces and moments
         forces
         moments
         wind
@@ -196,6 +201,8 @@ classdef Drone < handle
         transition_time
         alpha
         command_before_transition
+        
+        use_estimation = false
 
     end
 
@@ -271,7 +278,8 @@ classdef Drone < handle
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         function init_rand_pos(self, map_size)
-            % Initialize the drone to a random position on the map
+            % INIT_RAND_POS: Initialize the drone to a random position
+            % on the map
             self.pos_ned = map_size .* rand(3, 1);
             self.pos_ned(3) = -self.pos_ned(3); % h = -pd
             % Update pos_ned_history
@@ -284,7 +292,7 @@ classdef Drone < handle
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         function set_pos(self, position_ned)
-            % Set the position of the drone in the NED frame
+            % SET_POS: Set the position of the drone in the NED frame
             self.pos_ned = position_ned;
             % Update pos_ned_history
             if isempty(self.pos_ned_history)
@@ -293,12 +301,12 @@ classdef Drone < handle
                 self.pos_ned_history = [self.pos_ned_history; self.pos_ned'];
             end
             self.z_hat = true_states([self.get_state(); self.airdata; ...
-                                    NaN]);
+                                       NaN]);
         end
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         function set_vel(self, velocity_xyz)
-            % Set the velocity of the drone
+            % SET_VEL: Set the velocity of the drone
             self.vel_xyz = velocity_xyz;
             if isempty(self.vel_xyz_history)
                 self.vel_xyz_history = self.vel_xyz';
@@ -309,13 +317,13 @@ classdef Drone < handle
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         function state = get_state(self)
-            % Get the state of the drone, vect12
+            % GET_STATE: Get the state of the drone, vect12
             state = [self.pos_ned; self.vel_xyz; self.attitude; self.rates];
         end
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         function set_state(self, pos_ned, vel_xyz, attitude, rates)
-            % Set the drone state to the one passed in argument
+            % SET_STATE: Set the drone state to the one passed in argument
             self.set_pos(self, pos_ned)
             self.set_vel(vel_xyz);
             self.attitude = attitude;
@@ -325,17 +333,18 @@ classdef Drone < handle
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         function change_param(self, autopilot_version, p_drone)
-            % Change the drone parameters when changed from GUI
+            % CHANGE_PARAM: Change the drone parameters when changed from
+            % GUI
             self.autopilot_version = autopilot_version;
             self.p_drone = p_drone;
         end
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         function update_state(self, wind, time)
-            % Compute the new drone state
+            % UPDATE_STATE: Compute the new drone state
             
-            self.z_hat = true_states([self.get_state(); self.airdata; ...
-                time]);
+            self.update_sensor_measurements();
+            self.estimate_states(time);
             
             % Choose the autopilot
             if self.drone_type ~= "point_mass"
@@ -348,7 +357,6 @@ classdef Drone < handle
                 
                 self.delta = temp3(1:4);
                 self.full_command = temp3(5:end);
-                % Update true state
                 self.compute_dynamics(wind, time);
                 self.compute_kinematics(time);
                 self.update_battery();
@@ -359,6 +367,7 @@ classdef Drone < handle
                 % We suppose that the attitude is always (0,0,0), so the
                 % velocity in the body frame correponds to the velocity in the
                 % inertial frame. Only usable with the velocity controller.
+                
                 self.vel_xyz = self.command(2:4);
                 self.pos_ned = self.pos_ned + self.vel_xyz * self.p_sim.dt;
                 self.attitude(3) = self.command(1); % to plot drone psi angle
@@ -369,6 +378,7 @@ classdef Drone < handle
                 else
                     self.pos_ned_history = [self.pos_ned_history; self.pos_ned'];
                 end
+                
                 % Update vel_xyz_history
                 if isempty(self.vel_xyz_history)
                     self.vel_xyz_history = self.vel_xyz';
@@ -381,23 +391,25 @@ classdef Drone < handle
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         function update_prev_state(self)
-            % Update the state variables of the drone, by replacing the old
-            % with the new ones.
+            % UPDATE_PREV_STATE: Update the state variables of the drone, 
+            % by replacing the old with the new ones.
 
             self.prev_state = self.get_state();
         end
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         function update_path_length(self)
-            % Update the total lenght of the path that has been flyed by a
-            % drone
+            % UPDATE_PATH_LENGTH: Update the total lenght of the path that 
+            % has been flyed by a drone
             self.path_len = self.path_len + ...
                 pdist([self.prev_state(1:3)'; self.pos_ned'], 'euclidean');
         end
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         function update_battery(self)
-            % Update the state variables of the battery (i, V, Q)
+            % UPDATE_BATTERY: Update the state variables of the battery
+            % (i, V, Q)
+            %
             % i : intensity         [A]
             % V : voltage           [V]
             % Q : consumed capacity [Ah]
@@ -423,7 +435,8 @@ classdef Drone < handle
             self.Qt = (i_filt * self.p_sim.dt) / 3600;
             self.Q = self.Q + self.Qt; %[Ah]
 
-            V_nominal = param.e0 + param.e1 * (self.Q / param.Qf) + param.e2 * (self.Q / param.Qf)^2;
+            V_nominal = param.e0 + param.e1 * (self.Q / param.Qf) + ...
+                param.e2 * (self.Q / param.Qf)^2;
             V_final = param.A * exp(-param.B * (param.Qf - self.Q));
             self.V = V_nominal - param.R * i_filt - V_final;
 
@@ -452,7 +465,7 @@ classdef Drone < handle
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         function update_actuators(self)
-            % Model for the motor dynamics
+            % UPDATE_ACTUATORS: Model for the motor dynamics
 
             % equations:  J omega_dot + b omega = K i
             %             L i_dot + R i = V - K omega
@@ -478,25 +491,27 @@ classdef Drone < handle
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         plan_path(self, path_type, time)
-        % Path planner: get waypoints
+        % PLAN_PATH: get waypoints
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         function manage_path(self, time)
-            % Path manager: extract path from waypoints
+            % MANAGE_PATH: extract path from waypoints
 
             if self.drone_type == "fixed_wing"
                 self.path = path_manager_wing([self.nb_waypoints; ...
-                                            self.waypoints; self.z_hat; time], self.p_drone, self.p_sim);
+                                            self.waypoints; self.z_hat; time], ...
+                                            self.p_drone, self.p_sim);
             elseif self.drone_type == "quadcopter" || self.drone_type == "point_mass"
                 self.path = path_manager_quad([self.nb_waypoints; ...
-                                            self.waypoints; self.z_hat; time], self.p_drone, self.p_sim);
+                                            self.waypoints; self.z_hat; time], ...
+                                            self.p_drone, self.p_sim);
             end
 
         end
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         function follow_path(self) 
-            % Path follower: get command from path
+            % FOLLOW_PATH: get command from path
 
             if self.drone_type == "fixed_wing"
                 self.command = path_follower_wing(self.path, self.p_drone);
@@ -521,26 +536,26 @@ classdef Drone < handle
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         function compute_dynamics(self, wind, time)
-            % Compute forces and moments on the drone from its current
-            % state.
+            % COMPUTE_DYNAMICS: Compute forces and moments on the drone 
+            % from its current state.
 
-            if self.drone_type == "fixed_wing"% fixed wing
+            if self.drone_type == "fixed_wing"
                 out = forces_moments_wing(self.get_state(), self.delta, ...
                     wind, time, self.p_drone, self.p_physics);
-            elseif self.drone_type == "quadcopter"% quadcopter
+            elseif self.drone_type == "quadcopter"
                 out = forces_moments_quad(self.get_state(), self.delta, ...
                     wind, time, self.p_drone, self.p_sim, self.p_physics);
             end
 
-            self.forces = out(1:3);
-            self.moments = out(4:6);
+            self.forces = out(1:3); % fx, fy, fz
+            self.moments = out(4:6); % l, m, n
             self.airdata = out(7:12); % va, alpha, beta, wn, we, wd
         end
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         function compute_kinematics(self, time)
-            % Compute the new state of the drone from the forces and
-            % moments applied on it.
+            % COMPUTE_KINEMATICS: Compute the new state of the drone from 
+            % the forces and moments applied on it.
 
             self.update_prev_state();
 
@@ -549,7 +564,7 @@ classdef Drone < handle
             uu = [self.forces; self.moments];
 
             tspan = [time time+self.p_sim.dt];
-            % // TO DO: compare execution time with own RK4
+
             [~, x_ode] = ode23(@(t, x) kinematics_ode_fun(time, x, ...
                 x_old, uu, self.p_drone), tspan, x_old);
 
@@ -565,6 +580,31 @@ classdef Drone < handle
             self.rates = x_new(10:12)';
 
             self.update_path_length();
+        end
+        
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        function update_sensor_measurements(self)
+            % UPDATE_SENSOR_MEASUREMENTS: Update the sensor measurements
+            % based on the sensor parameters.
+            
+            y_imu_baro = sensors(self.get_state(), self.forces, self.airdata, ...
+                self.p_drone, self.p_physics);
+            y_gps = gps(self.get_state(), self.p_sim.dt, self.p_drone);
+            
+            self.y = [y_imu_baro; y_gps];
+
+        end
+        
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        function estimate_states(self, time)
+            
+            if self.use_estimation
+                self.z_hat = estimate_states(self.y, time, self.p_sim.dt, ...
+                    self.p_drone, self.p_physics); 
+            else
+                self.z_hat = true_states([self.get_state(); self.airdata; ...
+                            time]);
+            end
         end
 
     end
