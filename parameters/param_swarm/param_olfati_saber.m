@@ -1,9 +1,10 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Olfati Saber parameters
 %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Coeff for velocity matching
+%% Coefficients for velocity matching
+
 p_swarm.c_vm  = 3;
 
 p_swarm.a     = 1;
@@ -16,7 +17,8 @@ p_swarm.k     = 2;
 % same gain P.c_cm
 % P.v_migration = [0 4 0]';  
 
-% Obstacles parameters
+%% Obstacle parameters
+
 p_swarm.r0 = 10;
 p_swarm.lambda = 1;               % (0,1]
 p_swarm.c_pm_obs = 5;
