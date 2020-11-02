@@ -1,24 +1,24 @@
-# Aerial robotics exercises
+# SwarmLab
 <p align="center"><img src="https://github.com/lis-epfl/swarmlab/blob/master/docs/images/SwarmLab.svg" alt="Logo" height="200"></p>
  
 <br>
 <br>
 
-During the software exercises of the Aerial Robotics course, you will develop a drone simulator written in Matlab, which aims at:
+SwarmLab is a drone swarm simulator written in Matlab. It aims at:
 1. simulating *single drones*;
 2. simulating *swarms of drones*;
 
-This software is designed with _modularity_ and _scalability_ in mind. Throughout the exercises you will work on various modules designed for drone and drone swarm simulations that are partly coded for you. This simulator is suitable to different applications in the area of drones and swarm robotics, including prototyping, automatic collection of simulated data, algorithms testing, and education.
+This software is designed with _versatility_ and _scalability_ in mind. It allows for fast programming and easy incorporation of various modules designed for drone and drone swarm simulations. It  also decreases the coding effort by offering built-in and ready-to-use functionalities. These features make this package suitable to different applications in the area of drones and swarm robotics, including fast algorithm  development, training, education, and the automatic collection of simulated data.
 
 <p align="center">
 <img height=300 src="https://github.com/lis-epfl/swarmlab/blob/master/docs/images/Scheme.jpg" alt="scheme of architecture"/>
 </p>
 
 ## Requirements
-A [Matlab installation](https://www.mathworks.com/support/install-matlab.html?q=&page=1) is required.
+Only [Matlab installation](https://www.mathworks.com/support/install-matlab.html?q=&page=1) is required.
 
 ## 1. Single-drone simulations
-Single-drone simulations are based on the architecture proposed in [Small unmanned aircraft: theory and practice](https://press.princeton.edu/books/hardcover/9780691149219/small-unmanned-aircraft) and illustrated below. The focus of these simulations is realism. 
+Single-drone simulations exploit the architecture proposed by Professors Beard and McLain in [Small unmanned aircraft: theory and practice](https://press.princeton.edu/books/hardcover/9780691149219/small-unmanned-aircraft) and illustrated below. The focus of these simulations is realism. Their code is available [here](https://github.com/randybeard/mavsim_template_files).
 Two drone-types are supported: quadcopter and fixed-wing drones.
 
 <p align="center">
@@ -56,7 +56,7 @@ For ease of use, single-drone simulations can also be run from a dedicated GUI, 
 </p>
 
 ## 2. Drone-swarm simulations
-Drone swarm simulations use either the [Olfati-Saber](https://www.sciencedirect.com/science/article/pii/S1474667015386651) or the [Vasarhelyi](https://robotics.sciencemag.org/content/3/20/eaat3536.short) algorithms. The focus of these simulations is the behaviour of the group of drones, as a result of interactions among individuals. In this case, quadcopter and point-mass are supported. The latter can be used when computational time requirements prevail over simulation realism, or when the interest relies in the pure collective behavior, independently on the agents' dyanamics.
+Drone swarm simulations exploit either the [Olfati-Saber](https://www.sciencedirect.com/science/article/pii/S1474667015386651) or the [Vicsek (Vásárhelyi’s version)](https://robotics.sciencemag.org/content/3/20/eaat3536.short) algorithms. The focus of these simulations is the behaviour of the group of drones, as a result of interactions among individuals. In this case, quadcopter and point-mass (featuring no vehicle dynamics) are supported. The latter can be used when computational time requirements prevail over simulation realism, or when the interest relies in the pure collective behavior, independently on the agents' dyanamics.
 
 ### Graphics
 The graphical tools supported for drone swarm simulations are:
@@ -75,8 +75,8 @@ The graphical tools supported for drone swarm simulations are:
 
 ### Examples
 The following examples are provided:
-1. Olfati Saber's swarm algorithm
-2. Vasarhelyi's swarm algorithm
+1. Olfati Saber's swarming algorithm
+2. Vasarhelyi's version swarming algorithm
 
 The following illustrations represent:
 * a swarm of 5 drones with quadcopter dynamics, 
