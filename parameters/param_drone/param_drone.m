@@ -2,11 +2,11 @@
 % Generic parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-if exist('app')
+if exist('app', 'var')
     DRONE_TYPE = app.drone_type;
 else
     
-    if ~exist('DRONE_TYPE')
+    if ~exist('DRONE_TYPE', 'var')
         DRONE_TYPE = input(strcat('Select a drone type  among the following',...
             'fixed-wing, \n', ...
             'quadcopter: \n'),'s');
