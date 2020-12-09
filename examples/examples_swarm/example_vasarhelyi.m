@@ -14,7 +14,7 @@ ACTIVE_ENVIRONMENT = true;
 DEBUG = true;
 VIDEO = true;
 CENTER_VIEW_ON_SWARM = false;
-SWARM_ALGORITHM = "vicsek"; % either vicsek or olfati_saber
+SWARM_ALGORITHM = "vasarhelyi"; % either vasarhelyi or olfati_saber
 
 if DEBUG || VIDEO
     results_dirname = strcat('results/results_swarm');
@@ -39,7 +39,7 @@ if exist('app', 'var')
     DRONE_TYPE = app.drone_type;
     
     % Swarming parameters
-    SWARMING_ALGO = "vicsek";
+    SWARMING_ALGO = "vasarhelyi";
     p_swarm.nb_agents = app.nb_agents;
     p_swarm.d_ref = app.d_ref;
     p_swarm.v_ref = app.v_ref;

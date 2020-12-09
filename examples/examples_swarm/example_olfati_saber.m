@@ -14,7 +14,7 @@ ACTIVE_ENVIRONMENT = true;
 DEBUG = true;
 VIDEO = true;
 CENTER_VIEW_ON_SWARM = false; 
-SWARM_ALGORITHM = "olfati_saber"; % either vicsek or olfati_saber
+SWARM_ALGORITHM = "olfati_saber"; % either vasarhelyi or olfati_saber
 
 if DEBUG || VIDEO
     results_dirname = strcat('results/results_swarm');

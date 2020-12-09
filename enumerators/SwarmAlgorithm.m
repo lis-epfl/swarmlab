@@ -1,7 +1,7 @@
 classdef SwarmAlgorithm	
     % This class (enumerator) is meant to manage the Swarm algorithms:
-    % vicsek, olfati_saber, centr_nlmpc
+    % vasarhelyi, olfati_saber
    enumeration	
-      vicsek, olfati_saber, centr_nlmpc
+      vasarhelyi, olfati_saber
    end	
 end

@@ -1,6 +1,6 @@
 function output_collisions = example_co_mn(SWARM_ALGORITHM, max_neig, nb_agents, end_time)
     
-    %% Running example_vicsek.m
+    %% Running example_vasarhelyi.m
     DRONE_TYPE = "point_mass";
     ACTIVE_ENVIRONMENT = false;
     DEBUG = false;

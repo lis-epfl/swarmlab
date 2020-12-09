@@ -1,16 +1,18 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Vicsek Paramteres
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%% Repulsion %%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Vasarhelyi Paramteres
 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Repulsion
+
 % Repulsion range
 p_swarm.r0_rep = p_swarm.d_ref; % radius of repulsion
 % Repulsion gain
 p_swarm.p_rep = 0.03;
 
-%%%%%%%%%%%%%%%%%% Friction %%%%%%%%%%%%%%%%%%%%%%
-%
+
+%% Friction
+
 % Stopping point offset of alignment
 p_swarm.r0_fric = 85.3;
 % Coefficient of velocity alignment
@@ -22,8 +24,9 @@ p_swarm.p_fric = 3.2;
 % Acceleration of braking curve
 p_swarm.a_fric = 4.16;
 
-%%%%%%%%%%%%%%%%%% Obstacles and wall %%%%%%%%%%%%
-%
+
+%% Obstacles and wall parameters
+
 % Stopping point offset of walls
 p_swarm.r0_shill = 0.3;
 % Velocity of virtual shill agents
