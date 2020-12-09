@@ -1,4 +1,4 @@
-function [safety, order, union, alg_conn, safety_obs ] = ...
+function [safety, order, union, alg_conn, safety_obs, min_d_obs ] = ...
     compute_swarm_performance(pos_history, vel_history, ...
     p_swarm, dirname)
 % Compute swarm performance - This function allows to compute the 
@@ -20,6 +20,7 @@ function [safety, order, union, alg_conn, safety_obs ] = ...
 %   alg_conn: algebraic connectivity metric.
 %   safety_obs: safety againt obstacles metric. reflects the number of 
 %               agent-obstacle collisions
+%   min_d_obs: minimum distance agent-obstacle
 %
 
 %% Init variables
@@ -36,6 +37,7 @@ order = zeros(t_steps,1);
 union = zeros(t_steps,1);
 alg_conn = zeros(t_steps,1);
 safety_obs = zeros(t_steps,1);
+min_d_obs = zeros(t_steps,nb_agents);
 
 %% Loop over time
 
@@ -100,6 +102,7 @@ for k = 1:t_steps
             r_spheres = p_swarm.spheres(4,:);
             
             D_spheres = pdist2(pos_k',c_spheres');
+            min_d_obs(k,:) = min(pdist2(pos_k(1:2,:)',c_spheres') - repmat(r_spheres, nb_agents, 1),[],2); 
             nb_obs_coll(k) = nb_obs_coll(k) + sum(sum(D_spheres < repmat(r_spheres, nb_agents, 1)));
             nb_possible_coll = nb_possible_coll + nb_agents*length(r_spheres);
         end
@@ -108,6 +111,7 @@ for k = 1:t_steps
             r_cyl = p_swarm.cylinders(3,:);
             
             D_cyl = pdist2(pos_k(1:2,:)',c_cyl');
+            min_d_obs(k,:) = min(pdist2(pos_k(1:2,:)',c_cyl') - repmat(r_cyl, nb_agents, 1),[],2); 
             nb_obs_coll(k) = nb_obs_coll(k) + sum(sum(D_cyl < repmat(r_cyl, nb_agents, 1)));
             nb_possible_coll = nb_possible_coll + nb_agents*length(r_cyl);
         end

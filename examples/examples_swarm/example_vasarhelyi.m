@@ -193,13 +193,13 @@ if DEBUG && ~isempty(results_dirname)
     %% Analyse performance
     
     % Compute swarm performance
-    [safety, order, union, alg_conn, safety_obs] = ...
+    [safety, order, union, alg_conn, safety_obs, min_d_obs] = ...
         compute_swarm_performance(pos_ned_history, vel_ned_history, ...
         p_swarm, results_dirname);
     
     % Plot performance
     [perf_handle] = plot_swarm_performance(time_history', safety, order, ...
-        union, alg_conn, safety_obs, p_swarm, fontsize, results_dirname);
+        union, alg_conn, safety_obs, min_d_obs, p_swarm, fontsize, results_dirname);
     
     
 end
