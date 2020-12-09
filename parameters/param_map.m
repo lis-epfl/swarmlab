@@ -18,7 +18,10 @@ if ~exist('ACTIVE_ENVIRONMENT', 'var') || ACTIVE_ENVIRONMENT == false
     return 
 end
 
-if exist('ACTIVE_ENVIRONMENT', 'var') && ACTIVE_ENVIRONMENT == true    
+if exist('ACTIVE_ENVIRONMENT', 'var') && ACTIVE_ENVIRONMENT == true
+    map.bl_corner_north = 0;
+    map.bl_corner_east = 0;
+
     map.nb_blocks = 4; % the number of blocks per row
     map.street_width_perc = 0.5; % percentage of block that is empty
 

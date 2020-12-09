@@ -1,13 +1,23 @@
-function [traj_handle] = plot_trajectories_offline(pos_history, N, ...
+function [fig] = plot_trajectories_offline(pos_history, N, ...
                 colors, fontsize, map)
-% PLOT_TRAJECTORIES_OFFLINE - Plot trajectories of the agents
+% plot_trajectpries_offline - Plot trajectories of the agents.
 
-traj_handle = figure('Name','Offline swarm trajectories','NumberTitle','off');
+x0 = 10; 
+y0 = 10; 
+width = 400;
+height = 400;
+
+fig = figure('Name','Offline swarm trajectories','NumberTitle','off');
+hold on;
+grid on;
+box on;
+
+% Plot environment
 if ~isempty(map)
-    traj_handle = draw_cylinders(traj_handle,map);
+    fig = draw_cylinders(fig,map);
 end
 
-
+% Plot trajetcories
 for agent = 1:N
     hold on;
     
@@ -20,11 +30,13 @@ for agent = 1:N
     end
     
 end
-% title('Swarm trajectories');
+
 xlabel('Y Position [m]','fontsize',fontsize);
 ylabel('X Position [m]','fontsize',fontsize);
 zlabel('Z Position [m]','fontsize',fontsize);
 view(2);
 
+set(fig,'units','pixels','position',[x0,y0,width,height]);
+set(fig,'PaperPositionMode','auto');
 
 end

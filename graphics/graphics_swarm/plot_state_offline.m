@@ -21,12 +21,13 @@ function [traj_handle, dist_handle, speed_handle, accel_handle] = ...
 
 %% Parameters
 
-N = p_swarm.nb_agents;
+nb_agents = p_swarm.nb_agents;
+
 
 %% Plot state variables
 
 % Trajectories
-traj_handle = plot_trajectories_offline(pos_history, N, agents_color, ...
+traj_handle = plot_trajectories_offline(pos_history, nb_agents, agents_color, ...
     fontsize, map);
 % Distance
 dist_handle = plot_distance_offline(pos_history, time_history, ...
@@ -39,26 +40,28 @@ speed_handle = plot_speed_offline(vel_history, time_history, p_swarm.v_ref, ...
 accel_handle = plot_acceleration_offline(accel_history, time_history, ...
                         p_swarm.max_a, fontsize, lines_color);
 
+                    
 %% Save plots
 
 if ~isempty(dirname)
     
     traj_path = strcat(dirname, '/traj');
-    savefig(traj_handle,traj_path);
-    print(traj_handle,traj_path,'-dpng','-r300');
+    savefig(traj_handle, traj_path);
+    print(traj_handle, traj_path, '-dpng', '-r0');
     
     dist_path = strcat(dirname, '/dist');
-    savefig(dist_handle,dist_path);
-    print(dist_handle,dist_path,'-dpng','-r300');
+    savefig(dist_handle, dist_path);
+    print(dist_handle, dist_path, '-dpng', '-r0');
     
-    speed_path = strcat(dirname,'/speed');
-    savefig(speed_handle,speed_path);
-    print(speed_handle,speed_path,'-dpng','-r300');
+    speed_path = strcat(dirname, '/speed');
+    savefig(speed_handle, speed_path);
+    print(speed_handle, speed_path, '-dpng', '-r0');
     
-    accel_path = strcat(dirname,'/accel');
-    savefig(accel_handle,accel_path);
-    print(accel_handle,accel_path,'-dpng','-r300');
+    accel_path = strcat(dirname, '/accel');
+    savefig(accel_handle, accel_path);
+    print(accel_handle, accel_path, '-dpng', '-r0');
     
 end
+
 
 end
