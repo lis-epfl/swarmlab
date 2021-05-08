@@ -120,6 +120,23 @@ Finally, simply run the script and pay attention to the prompted instructions!
 
 Thanks to Victor Delafontaine, Andrea Giordano, and Anthony De Bortoli for their valuable contribution. Thanks to Dario Floreano and Fabrizio Schiano for their wise advice.
 
+## Reference
+
+* [Swarmlab: a Drone Swarm Simulator](https://ieeexplore.ieee.org/document/9340854)
+
+Please, cite us with:
+```
+@INPROCEEDINGS{9340854,
+  author={Soria, Enrica and Schiano, Fabrizio and Floreano, Dario},
+  booktitle={2020 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)}, 
+  title={SwarmLab: a Matlab Drone Swarm Simulator}, 
+  year={2020},
+  volume={},
+  number={},
+  pages={8005-8011},
+  doi={10.1109/IROS45743.2020.9340854}}
+```
+
 ## Licensing
 This software is provided under MIT License (MIT). 
 Copyright (c) 2020 Enrica Soria.
