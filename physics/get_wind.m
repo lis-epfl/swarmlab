@@ -58,7 +58,7 @@ if wind_active && isempty(wind_struct)
     shearExp = 0.2;        % vertical wind shear exponent (default 0.2)
     
     % Create wind field structure
-    [WF,~,t,~,~,X,Y,~,~] = TurbulentWindFieldGenerator(U0,I0,Seed,HubHt,Nx,Ny,Lx,Ly,dt,T,xLu,xLv,xLw,Lc,a,shearExp);
+    [WF,~,t,~,~,X,Y,~,~] = turbulent_wind_field_generator(U0,I0,Seed,HubHt,Nx,Ny,Lx,Ly,dt,T,xLu,xLv,xLw,Lc,a,shearExp);
     wind_struct.WF = WF;
     wind_struct.time = t';
     wind_struct.X = flip(X(1,:)'+map.width/2);
