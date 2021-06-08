@@ -15,7 +15,7 @@ This software is designed with _versatility_ and _scalability_ in mind. It allow
 </p>
 
 ## Requirements
-Only [Matlab installation](https://www.mathworks.com/support/install-matlab.html?q=&page=1) is required.
+Only [Matlab installation](https://www.mathworks.com/support/install-matlab.html?q=&page=1) is required with the Statistics and Machine Learning Toolbox.
 
 ## 1. Single-drone simulations
 Single-drone simulations exploit the architecture proposed by Professors Beard and McLain in [Small unmanned aircraft: theory and practice](https://press.princeton.edu/books/hardcover/9780691149219/small-unmanned-aircraft) and illustrated below. The focus of these simulations is realism. Their code is available [here](https://github.com/randybeard/mavsim_template_files).
