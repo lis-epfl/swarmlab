@@ -1,0 +1,9 @@
+@INPROCEEDINGS{9340854,
+  author={Soria, Enrica and Schiano, Fabrizio and Floreano, Dario},
+  booktitle={2020 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)}, 
+  title={SwarmLab: a Matlab Drone Swarm Simulator}, 
+  year={2020},
+  volume={},
+  number={},
+  pages={8005-8011},
+  doi={10.1109/IROS45743.2020.9340854}}
