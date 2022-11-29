@@ -112,8 +112,11 @@ end
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-p_swarm.max_a = 10;
-% p_swarm.max_a = []; % leave empty if you use a real drone model
+if DRONE_TYPE == "fixed_wing" || DRONE_TYPE == "quadcopter"
+    p_swarm.max_a = []; % leave empty if you use a real drone model
+elseif DRONE_TYPE == "point_mass"
+    p_swarm.max_a = 10;
+end
 p_swarm.max_v = 7;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
