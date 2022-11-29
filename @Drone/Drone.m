@@ -570,12 +570,17 @@ classdef Drone < handle
 
             x_new = x_ode(end, :);
             self.pos_ned = x_new(1:3)';
-            if self.pos_ned_history == [NaN, NaN, NaN]
+            if isequal(self.pos_ned_history, [NaN, NaN, NaN])
                 self.pos_ned_history = self.pos_ned;
             else
                 self.pos_ned_history = [self.pos_ned_history; self.pos_ned'];
             end
             self.vel_xyz = x_new(4:6)';
+            if isempty(self.vel_xyz_history) || isequal(self.vel_xyz_history, [NaN, NaN, NaN])
+                self.vel_xyz_history = self.vel_xyz'; % rows = time steps, columns = states
+            else
+                self.vel_xyz_history = [self.vel_xyz_history; self.vel_xyz'];
+            end
             self.attitude = x_new(7:9)';
             self.rates = x_new(10:12)';
 
